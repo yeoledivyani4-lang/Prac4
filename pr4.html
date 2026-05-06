@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript Form Validation</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: linear-gradient(to right, #74ebd5, #9face6);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 400px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            text-align: center;
+            color: darkblue;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid gray;
+            border-radius: 5px;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: darkblue;
+            outline: none;
+            box-shadow: 0 0 5px lightblue;
+        }
+
+        input[type="submit"] {
+            background-color: darkblue;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+
+        input[type="submit"]:hover {
+            background-color: navy;
+        }
+    </style>
+
+    <script>
+        window.onload = function() {
+            // Prevent future date selection
+            var today = new Date().toISOString().split("T")[0];
+            document.getElementById("dob").setAttribute("max", today);
+        };
+
+        function validateForm() {
+
+            var uname = document.getElementById("uname").value;
+            if (uname == "") {
+                alert("Please enter User Name");
+                return false;
+            }
+
+            var address = document.getElementById("address").value;
+            if (address == "") {
+                alert("Please enter Address");
+                return false;
+            }
+
+            // DOB VALIDATION
+            var dob = document.getElementById("dob").value;
+            if (dob == "") {
+                alert("Please select Date of Birth");
+                return false;
+            }
+
+            var dobDate = new Date(dob);
+            var today = new Date();
+
+            // Future date check
+            if (dobDate > today) {
+                alert("Date of Birth cannot be in the future");
+                return false;
+            }
+
+            // Age calculation
+            var age = today.getFullYear() - dobDate.getFullYear();
+            var monthDiff = today.getMonth() - dobDate.getMonth();
+
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+                age--;
+            }
+
+            if (age < 18) {
+                alert("You must be at least 18 years old");
+                return false;
+            }
+
+            // Year validation
+            if (dobDate.getFullYear() < 1900) {
+                alert("Please enter a valid year");
+                return false;
+            }
+
+            // Email validation
+            var email = document.getElementById("email").value;
+            var emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+            if (!email.match(emailPattern)) {
+                alert("Please enter valid Email ID");
+                return false;
+            }
+
+            // PAN validation
+            var pan = document.getElementById("pan").value;
+            var panPattern = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+            if (!pan.match(panPattern)) {
+                alert("Please enter valid PAN Number");
+                return false;
+            }
+
+            // Aadhaar validation
+            var aadhar = document.getElementById("aadhar").value;
+            if (aadhar.length != 12 || isNaN(aadhar)) {
+                alert("Please enter valid 12-digit Aadhaar Number");
+                return false;
+            }
+
+            // Education validation
+            var education = document.getElementById("education").value;
+            if (education == "") {
+                alert("Please select Education");
+                return false;
+            }
+
+            // Contact validation
+            var contact = document.getElementById("contact").value;
+            if (contact.length != 10 || isNaN(contact)) {
+                alert("Please enter valid 10-digit Contact Number");
+                return false;
+            }
+
+            alert("Form Submitted Successfully");
+            return true;
+        }
+    </script>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>User Registration Form</h2>
+
+    <form onsubmit="return validateForm()">
+
+        <label>User Name:</label>
+        <input type="text" id="uname">
+
+        <label>Address:</label>
+        <textarea id="address"></textarea>
+
+        <label>Date of Birth:</label>
+        <input type="date" id="dob">
+
+        <label>Email ID:</label>
+        <input type="text" id="email">
+
+        <label>PAN Number:</label>
+        <input type="text" id="pan" placeholder="ABCDE1234F">
+
+        <label>Aadhaar Number:</label>
+        <input type="text" id="aadhar">
+
+        <label>Education:</label>
+        <select id="education">
+            <option value="">--Select--</option>
+            <option>SSC</option>
+            <option>HSC</option>
+            <option>Graduate</option>
+            <option>Post Graduate</option>
+        </select>
+
+        <label>Contact Number:</label>
+        <input type="text" id="contact">
+
+        <input type="submit" value="Submit">
+
+    </form>
+</div>
+
+</body>
+</html>
